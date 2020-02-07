@@ -18,9 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isMinusCleek = false;
     private boolean isMultiplicationCleek = false;
     private boolean isDivisionCleek = false;
-
+    private char oper;
     private double buff = 0;
-
 
 
     @Override
@@ -52,110 +51,108 @@ public class MainActivity extends AppCompatActivity {
         Button buttonPoint = (Button) findViewById(R.id.button_point);
         textView = (TextView) findViewById(R.id.text_view);
 
-        View.OnClickListener onClickListenerButton = new View.OnClickListener() {
+        View.OnClickListener onClickListenerButton;
+
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(1);
             }
+        });
 
-        };
-        button1.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(2);
             }
-        };
-        button2.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(3);
             }
-        };
-        button3.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(4);
             }
-        };
-        button4.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(5);
             }
-        };
-        button5.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(6);
             }
-        };
-        button6.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(7);
             }
-        };
-        button7.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(8);
             }
-        };
-        button8.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(9);
             }
-        };
-        button9.setOnClickListener(onClickListenerButton);
+        });
 
-        onClickListenerButton = new View.OnClickListener() {
+        button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateInNumm(0);
             }
-        };
-        button0.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        });
+        buttonPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isPoint) {
-                    isPoint = true;
+                if (!sNumm.contains(".")) {
                     sNumm += ".";
                     textView.setText(sNumm);
                 }
             }
-        };
-        buttonPoint.setOnClickListener(onClickListenerButton);
+        });
+//
+//        onClickListenerButton = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!isPoint) {
+//                    isPoint = true;
+//                    sNumm += ".";
+//                    textView.setText(sNumm);
+//                }
+//            }
+//        };
+//        buttonPoint.setOnClickListener(onClickListenerButton);
 
         //==============================================================
         //button management
-        onClickListenerButton = new View.OnClickListener() {
+        buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 zeroState();
             }
-        };
-        buttonClear.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        });
+        buttonRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!sNumm.equals("") && sNumm.length() != 1) {
@@ -165,75 +162,81 @@ public class MainActivity extends AppCompatActivity {
                     zeroState();
                 }
             }
-        };
-        buttonRemove.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        });
+        buttonPercent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sNumm = String.valueOf((Double.parseDouble(sNumm) / 100.));//error but rounding not work
                 textView.setText(sNumm);
             }
-        };
-        buttonPercent.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        });
+        buttonPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 plus();
             }
-        };
-        buttonPlus.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        });
+        buttonMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 minus();
             }
-        };
-        buttonMinus.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        });
+        buttonMultiplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 multiplication();
             }
-        };
-        buttonMultiplication.setOnClickListener(onClickListenerButton);
-
-        onClickListenerButton = new View.OnClickListener() {
+        });
+        buttonDivision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 division();
             }
-        };
-        buttonDivision.setOnClickListener(onClickListenerButton);
+        });
 
         onClickListenerButton = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPlusCleek) {
-                    plus();
+                switch (oper) {
+                    case '+':
+                        plus();
+                        break;
+                    case '-':
+                        minus();
+                        break;
+                    case '*':
+                        multiplication();
+                        break;
+                    case '/':
+                        division();
+                        break;
+                    default:
+                        break;
                 }
-                if (isMinusCleek) {
-                    minus();
-                }
-                if (isMultiplicationCleek) {
-                    multiplication();
-                }
-                if (isDivisionCleek) {
-                    division();
-                }
+//                if (isPlusCleek) {
+//                    plus();
+//                }
+//                if (isMinusCleek) {
+//                    minus();
+//                }
+//                if (isMultiplicationCleek) {
+//                    multiplication();
+//                }
+//                if (isDivisionCleek) {
+//                    division();
+//                }
             }
         };
         buttonResult.setOnClickListener(onClickListenerButton);
 
 
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("sNumm",sNumm);
+        outState.putString("sNumm", sNumm);
         outState.putBoolean("isDivisionCleek", isDivisionCleek);
         outState.putBoolean("isMinusCleek", isMinusCleek);
         outState.putBoolean("isPlusCleek", isPlusCleek);
@@ -261,9 +264,10 @@ public class MainActivity extends AppCompatActivity {
                 buff = Double.parseDouble(sNumm);
                 sNumm = "";
                 zeroState();
+                oper = '/';
                 isDivisionCleek = true;
             } else {
-                sNumm = String.valueOf((Double.valueOf(sNumm) / buff));
+                sNumm = String.valueOf((buff / Double.valueOf(sNumm)));
                 textView.setText(sNumm);
                 isDivisionCleek = false;
             }
@@ -277,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
                 buff = Double.parseDouble(sNumm);
                 sNumm = "";
                 zeroState();
+                oper = '*';
                 isMultiplicationCleek = true;
             } else {
                 sNumm = String.valueOf((Double.valueOf(sNumm) * buff));
@@ -291,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
             if (!isMinusCleek) {
                 buff = Double.parseDouble(sNumm);
                 sNumm = "";
+                oper = '-';
                 isMinusCleek = true;
             } else {
                 sNumm = String.valueOf((buff - Double.valueOf(sNumm)));
@@ -306,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
             if (!isPlusCleek) {
                 buff = Double.parseDouble(sNumm);
                 zeroState();
+                oper = '+';
                 isPlusCleek = true;
             } else {
                 sNumm = String.valueOf((Double.valueOf(sNumm) + buff));
@@ -317,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void zeroState() {
         sNumm = "";
+        oper = ' ';
         textView.setText("0");
         isPoint = false;
     }
