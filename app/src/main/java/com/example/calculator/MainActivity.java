@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
         buttonPercent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  sNumm = String.valueOf((Double.parseDouble(sNumm) / 100.));//error but rounding not work
                 buff = (Double.parseDouble(numm.toString()) / 100.);
                 zeroState();
                 numm.append(buff);
