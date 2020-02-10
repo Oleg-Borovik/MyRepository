@@ -12,13 +12,14 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
 
-    private String sNumm = "";
+    // private String sNumm = "";
+    private StringBuffer numm = new StringBuffer();
     private boolean isPoint = false;
     private boolean isPlusCleek = false;
     private boolean isMinusCleek = false;
     private boolean isMultiplicationCleek = false;
     private boolean isDivisionCleek = false;
-    private char oper;
+    private int oper;
     private double buff = 0;
 
 
@@ -125,24 +126,13 @@ public class MainActivity extends AppCompatActivity {
         buttonPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!sNumm.contains(".")) {
-                    sNumm += ".";
-                    textView.setText(sNumm);
+                if (!numm.toString().contains(".")) {
+                    //  sNumm += '.';
+                    numm.append('.');
+                    textView.setText(numm);
                 }
             }
         });
-//
-//        onClickListenerButton = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!isPoint) {
-//                    isPoint = true;
-//                    sNumm += ".";
-//                    textView.setText(sNumm);
-//                }
-//            }
-//        };
-//        buttonPoint.setOnClickListener(onClickListenerButton);
 
         //==============================================================
         //button management
@@ -150,24 +140,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 zeroState();
+                buff = 0;
             }
         });
         buttonRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!sNumm.equals("") && sNumm.length() != 1) {
-                    sNumm = sNumm.replaceAll(".$", "");
-                    textView.setText(sNumm);
+                if (numm.length() > 1) {
+                    // sNumm = sNumm.replaceAll(".$", "");
+                    numm.deleteCharAt(numm.length() - 1);
+                    textView.setText(numm);
                 } else {
                     zeroState();
+                    buff = 0;
                 }
             }
         });
         buttonPercent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sNumm = String.valueOf((Double.parseDouble(sNumm) / 100.));//error but rounding not work
-                textView.setText(sNumm);
+                //  sNumm = String.valueOf((Double.parseDouble(sNumm) / 100.));//error but rounding not work
+                buff = (Double.parseDouble(numm.toString()) / 100.);
+                zeroState();
+                numm.append(buff);
+                textView.setText(numm);
             }
         });
         buttonPlus.setOnClickListener(new View.OnClickListener() {
@@ -199,33 +195,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switch (oper) {
-                    case '+':
+                    case 1:
                         plus();
                         break;
-                    case '-':
+                    case 2:
                         minus();
                         break;
-                    case '*':
+                    case 3:
                         multiplication();
                         break;
-                    case '/':
+                    case 4:
                         division();
                         break;
                     default:
+                        zeroState();
                         break;
                 }
-//                if (isPlusCleek) {
-//                    plus();
-//                }
-//                if (isMinusCleek) {
-//                    minus();
-//                }
-//                if (isMultiplicationCleek) {
-//                    multiplication();
-//                }
-//                if (isDivisionCleek) {
-//                    division();
-//                }
             }
         };
         buttonResult.setOnClickListener(onClickListenerButton);
@@ -236,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("sNumm", sNumm);
+        outState.putString("numm", numm.toString());
         outState.putBoolean("isDivisionCleek", isDivisionCleek);
         outState.putBoolean("isMinusCleek", isMinusCleek);
         outState.putBoolean("isPlusCleek", isPlusCleek);
@@ -248,27 +233,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        sNumm = savedInstanceState.getString("sNumm");
+        numm.append(savedInstanceState.getString("numm"));
         isDivisionCleek = savedInstanceState.getBoolean("isDivisionCleek");
         isMinusCleek = savedInstanceState.getBoolean("isMinusCleek");
         isPlusCleek = savedInstanceState.getBoolean("isPlusCleek");
         isMultiplicationCleek = savedInstanceState.getBoolean("isMultiplicationCleek");
         buff = savedInstanceState.getDouble("buff");
-        textView.setText(sNumm);
+        textView.setText(numm);
     }
 
     private void division() {
 
-        if (sNumm.length() > 0) {
+        if (numm.length() > 0) {
             if (!isDivisionCleek) {
-                buff = Double.parseDouble(sNumm);
-                sNumm = "";
+                buff = Double.parseDouble(numm.toString());
                 zeroState();
-                oper = '/';
+                oper = 4;
                 isDivisionCleek = true;
             } else {
-                sNumm = String.valueOf((buff / Double.valueOf(sNumm)));
-                textView.setText(sNumm);
+                buff = (buff / Double.valueOf(numm.toString()));
+                zeroState();
+                numm.append(buff);
+                textView.setText(numm);
                 isDivisionCleek = false;
             }
         }
@@ -276,31 +262,35 @@ public class MainActivity extends AppCompatActivity {
 
     private void multiplication() {
 
-        if (sNumm.length() > 0) {
+        if (numm.length() > 0) {
             if (!isMultiplicationCleek) {
-                buff = Double.parseDouble(sNumm);
-                sNumm = "";
+                buff = Double.parseDouble(numm.toString());
                 zeroState();
-                oper = '*';
+                oper = 3;
                 isMultiplicationCleek = true;
             } else {
-                sNumm = String.valueOf((Double.valueOf(sNumm) * buff));
-                textView.setText(sNumm);
+                buff = (Double.valueOf(numm.toString()) * buff);
+                zeroState();
+                numm.append(buff);
+                textView.setText(numm);
                 isMultiplicationCleek = false;
             }
         }
     }
 
     private void minus() {
-        if (sNumm.length() > 0) {
+
+        if (numm.length() > 0) {
             if (!isMinusCleek) {
-                buff = Double.parseDouble(sNumm);
-                sNumm = "";
-                oper = '-';
+                buff = Double.parseDouble(numm.toString());
+                zeroState();
+                oper = 2;
                 isMinusCleek = true;
             } else {
-                sNumm = String.valueOf((buff - Double.valueOf(sNumm)));
-                textView.setText(sNumm);
+                buff = (buff - Double.valueOf(numm.toString()));
+                zeroState();
+                numm.append(buff);
+                textView.setText(numm);
                 isMinusCleek = false;
             }
         }
@@ -308,32 +298,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void plus() {
 
-        if (sNumm.length() > 0) {
+        if (numm.length() > 0) {
             if (!isPlusCleek) {
-                buff = Double.parseDouble(sNumm);
+                buff = Double.parseDouble(numm.toString());
                 zeroState();
-                oper = '+';
+                oper = 1;
                 isPlusCleek = true;
             } else {
-                sNumm = String.valueOf((Double.valueOf(sNumm) + buff));
-                textView.setText(sNumm);
+                buff = (Double.valueOf(numm.toString()) + buff);
+                zeroState();
+                numm.append(buff);
+                textView.setText(numm);
                 isPlusCleek = false;
             }
         }
     }
 
     private void zeroState() {
-        sNumm = "";
-        oper = ' ';
+//        sNumm = "";
+        numm.delete(0, numm.length());
+        oper = 1;
         textView.setText("0");
         isPoint = false;
     }
 
     private void updateInNumm(int iNumm) {
 
-        if (sNumm.length() < 15) {
-            sNumm += String.valueOf(iNumm);
-            textView.setText(sNumm);
+        if (numm.length() < 15) {
+            //sNumm += String.valueOf(iNumm);
+            numm.append(iNumm);
+            textView.setText(numm);
         }
     }
 }
